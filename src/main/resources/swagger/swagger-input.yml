@@ -1,0 +1,139 @@
+swagger: '2.0'
+info:
+  description: 'ITG Coding Exam'
+  version: 1.0.0
+  title: coding-exam
+basePath: /
+tags:
+  - name: ITG Coding Exam
+    description: The ITG Coding Exam - Create a Microservice project that caters the requirements.
+schemes:
+  - https
+paths:
+  /v1/account:
+    post:
+      description: Create a new customer account
+      operationId: saveCustomerDetails
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: CustomerDetails
+          in: body
+          description: CustomerDetails is a model for customers details.
+          required: true
+          schema:
+            $ref: '#/definitions/CustomerDetails'
+      responses:
+        201:
+          description: Success Saving
+          schema:
+            $ref: '#/definitions/CustomerResponse'
+        400:
+          description: Bad Request
+        404:
+          description: Not Found
+        500:
+          description: Internal Server Error
+        502:
+          description: Bad Gateway
+        503:
+          description: Service Unavailable
+        504:
+          description: Gateway Timeout
+  /v1/account/{customerNumber}:
+    get:
+      description: Get Customer details based on customer number
+      operationId: getCustomerDetails
+      produces:
+        - application/json
+      parameters:
+        - name: customerNumber
+          in: path
+          description: CustomerNumber is a unique key for customers
+          type: integer
+          required: true
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: '#/definitions/CustomerBankResponse'
+        400:
+          description: Bad Request
+        404:
+          description: Not Found
+        500:
+          description: Internal Server Error
+        502:
+          description: Bad Gateway
+        503:
+          description: Service Unavailable
+        504:
+          description: Gateway Timeout
+definitions:
+  CustomerDetails:
+    title: Customer Details Model
+    type: object
+    properties:
+      customerName:
+        type: string
+        format: string
+      customerMobile:
+        type: string
+        format: string
+      customerEmail:
+        type: string
+        format: string
+      address1:
+        type: string
+        format: string
+      address2:
+        type: string
+        format: string
+      accountType:
+        type: string
+        format: string
+      savings:
+        type: array
+        items:
+          $ref: '#/definitions/BankAccountDetails'
+  BankAccountDetails:
+    title: Bank Account Details
+    type: object
+    properties:
+      accountNumber:
+        type: integer
+        format: integer
+      accountType:
+        type: string
+        format: string
+      availableBalance:
+        type: integer
+        format: integer
+  CustomerResponse:
+    title: Customer Response
+    type: object
+    properties:
+      customerNumber:
+        type: integer
+        format: integer
+      transactionStatusCode:
+        type: integer
+        format: integer
+      transactionStatusDescription:
+        type: string
+        format: string
+  CustomerBankResponse:
+    title: Customer - Bank Response
+    type: object
+    properties:
+      customerDetails:
+        type: object
+        $ref: '#/definitions/CustomerDetails'
+      transactionStatusCode:
+        type: integer
+        format: integer
+      transactionStatusDescription:
+        type: string
+        format: string
